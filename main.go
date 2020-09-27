@@ -21,9 +21,11 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/ping", Ping)
 
-	runner := core.NewServerRunner(8080, mux)
+	runnerInitializer := core.NewServerRunnerInitializer(8080, mux)
+	app := core.NewApp()
+	app.Use(runnerInitializer)
 
-	err := runner.Run()
+	err := app.Run()
 	if err != nil {
 		log.Fatal("Listen server", err)
 	}
