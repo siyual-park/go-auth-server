@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+
+	"./core"
 )
 
 func Ping(res http.ResponseWriter, req *http.Request) {
@@ -17,12 +18,12 @@ func Ping(res http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	port := 8080
-
 	mux := http.NewServeMux()
 	mux.HandleFunc("/ping", Ping)
 
-	err := http.ListenAndServe(fmt.Sprintf(":%d", port), mux)
+	runner := core.NewServerRunner(8080, mux)
+
+	err := runner.Run()
 	if err != nil {
 		log.Fatal("Listen server", err)
 	}
