@@ -1,28 +1,17 @@
 package main
 
 import (
+	"./app"
+	"./initializer"
 	"log"
-	"net/http"
-
-	"./core"
 )
 
-func Ping(res http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodPost {
-		res.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
-	res.WriteHeader(http.StatusOK)
-	data := []byte("pong")
-	res.Write(data)
-}
-
 func main() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/ping", Ping)
+	handlerInitializer := initializer.NewHandlerInitializer()
+	runnerInitializer := initializer.NewServerRunnerInitializer(8080)
 
-	runnerInitializer := core.NewServerRunnerInitializer(8080, mux)
-	app := core.NewApp()
+	app := app.NewApp()
+	app.Use(handlerInitializer)
 	app.Use(runnerInitializer)
 
 	err := app.Run()

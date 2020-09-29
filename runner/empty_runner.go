@@ -1,6 +1,9 @@
-package core
+package runner
 
-import "errors"
+import (
+	"../context"
+	"errors"
+)
 
 type EmptyRunner struct {
 }
@@ -9,6 +12,6 @@ func NewEmptyRunner() *EmptyRunner {
 	return &EmptyRunner{}
 }
 
-func (runner *EmptyRunner) Run(context *Context) error {
+func (runner *EmptyRunner) Run(context *context.Context) error {
 	return errors.New("Runner is empty")
 }
